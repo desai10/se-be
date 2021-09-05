@@ -1,13 +1,14 @@
 class MessagesController < ApplicationController
-    def index
-        nessages = Message.all
-        render json: message
-    end
 
     def create
         message = Message.new(message_params)
+        room = Room.find(message_params[:room_id])
         if message.save
-            ActionCable.server.broadcast 'messages_channel', message
+            serialized_data = ActiveModelSerializers::Adapter::Json.new(
+                MessageSerializer.new(message)).serializable_hash
+
+            MessagesChannel.broadcast_to room, serialized_data
+
             head :ok
         else
             head :ok
@@ -17,6 +18,6 @@ class MessagesController < ApplicationController
     private
     
     def message_params
-        params.require(:message).permit(:content)
+        params.require(:message).permit(:content, :room_id)
     end
 end
