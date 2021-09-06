@@ -7,8 +7,15 @@ class RoomController < ApplicationController
     def create
         room = Room.new(room_params)
         if room.save
-          head :ok
+            render json: room
+        else
+            render json: {"error": "somethign went wrong!"}
         end
+    end
+
+    def show
+        room = Room.find(params[:id])
+        render json: room
     end
       
     private
