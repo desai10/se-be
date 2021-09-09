@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3'
 
 services:
     web:
@@ -20,7 +20,7 @@ services:
         ports:
             - 5432:5432
         environment:
-            POSTGRES_DB: docker_rails_development
+            POSTGRES_DB: se_be_development
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: password
         volumes:
